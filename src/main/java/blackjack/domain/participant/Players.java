@@ -31,18 +31,23 @@ public class Players {
 
     public List<GameResult> calculateGameResults(Dealer dealer) {
         GameJudge gameJudge = new GameJudge();
-        List<GameResult> gameResults = new ArrayList<>();
-        int totalPlayerProfit = 0;
-
-        for (Player player : players) {
-            GameOutcome outcome = gameJudge.judge(player, dealer);
-            int playerProfit = player.getBet().calculateProfit(outcome.getPayoutRate());
-            totalPlayerProfit += playerProfit;
-            gameResults.add(GameResult.from(player, playerProfit));
-        }
+        List<GameResult> gameResults = calculatePlayerGameResults(gameJudge, dealer);
+        int totalPlayerProfit = gameResults.stream()
+                .mapToInt(GameResult::profit)
+                .sum();
 
         gameResults.addFirst(GameResult.from(dealer, -totalPlayerProfit));
         return gameResults;
+    }
+
+    private List<GameResult> calculatePlayerGameResults(GameJudge gameJudge, Dealer dealer) {
+        List<GameResult> playerGameResults = new ArrayList<>();
+        for (Player player : players) {
+            GameOutcome outcome = gameJudge.judge(player, dealer);
+            int playerProfit = player.getBet().calculateProfit(outcome.getPayoutRate());
+            playerGameResults.add(GameResult.from(player, playerProfit));
+        }
+        return playerGameResults;
     }
 
     private void validateDuplicate(List<Player> allPlayers) {
