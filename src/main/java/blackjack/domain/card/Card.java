@@ -10,16 +10,16 @@ public class Card {
         this.rank = rank;
     }
 
-    public Suit getSuit() {
-        return suit;
-    }
-
     public Rank getRank() {
         return rank;
     }
 
     public boolean isAce() {
         return this.rank == Rank.ACE;
+    }
+
+    public String format() {
+        return rank.getName() + suit.getName();
     }
 
 }

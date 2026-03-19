@@ -25,12 +25,12 @@ public class OutputView {
 
     private void printDealerCard(Dealer dealer) {
         Card card = dealer.cards().getFirst();
-        System.out.println(String.format("딜러카드: %s%s", card.getRank().getName(), card.getSuit().getName()));
+        System.out.println(String.format("딜러카드: %s", card.format()));
     }
 
     public void printPlayerCards(Player player) {
         List<String> formats = player.cards().stream()
-                .map(card -> card.getRank().getName() + card.getSuit().getName())
+                .map(Card::format)
                 .toList();
         System.out.println(String.format("%s카드: %s", player.getName(), String.join(", ", formats)));
     }
@@ -45,7 +45,7 @@ public class OutputView {
         System.out.println();
         for (GameSummary gameSummary : gameSummaries) {
             List<String> cardFormats = gameSummary.cards().stream()
-                    .map(card -> card.getRank().getName() + card.getSuit().getName())
+                    .map(Card::format)
                     .toList();
             System.out.println(String.format("%s카드: %s - 결과: %d", gameSummary.name(), String.join(", ", cardFormats),
                     gameSummary.score()));
