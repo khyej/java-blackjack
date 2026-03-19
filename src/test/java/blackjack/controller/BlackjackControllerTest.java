@@ -7,6 +7,7 @@ import blackjack.domain.card.Rank;
 import blackjack.domain.card.Suit;
 import blackjack.domain.deck.Deck;
 import blackjack.domain.deck.FixShuffleStrategy;
+import blackjack.domain.participant.Dealer;
 import blackjack.view.InputView;
 import blackjack.view.OutputView;
 import java.io.ByteArrayInputStream;
@@ -94,7 +95,7 @@ class BlackjackControllerTest {
         );
 
         String result = run("pobi" + NEW_LINE + "1000" + NEW_LINE + "n" + NEW_LINE, fixCards);
-        assertThat(result).contains("딜러는 16이하라 한장의 카드를 더 받았습니다");
+        assertThat(result).contains("딜러는 " + Dealer.DEALER_STAND_SCORE + "미만이라 한장의 카드를 더 받았습니다");
     }
 
 }

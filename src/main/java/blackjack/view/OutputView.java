@@ -1,6 +1,7 @@
 package blackjack.view;
 
 import blackjack.domain.card.Card;
+import blackjack.domain.deck.Deck;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
 import blackjack.domain.result.GameResult;
@@ -13,7 +14,7 @@ public class OutputView {
         List<String> names = players.stream()
                 .map(Player::getName)
                 .toList();
-        System.out.println(String.format("딜러와 %s에게 2장을 나누었습니다.", String.join(", ", names)));
+        System.out.println(String.format("딜러와 %s에게 %d장을 나누었습니다.", String.join(", ", names), Deck.INITIAL_CARD_COUNT));
 
         printDealerCard(dealer);
         for (Player player : players) {
@@ -37,7 +38,7 @@ public class OutputView {
 
     public void printDealerHit() {
         System.out.println();
-        System.out.println("딜러는 16이하라 한장의 카드를 더 받았습니다.");
+        System.out.println(String.format("딜러는 %d미만이라 한장의 카드를 더 받았습니다.", Dealer.DEALER_STAND_SCORE));
     }
 
     public void printGameSummary(List<GameSummary> gameSummaries) {
