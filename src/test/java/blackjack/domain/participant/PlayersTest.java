@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.tuple;
 import blackjack.domain.card.Card;
 import blackjack.domain.card.Rank;
 import blackjack.domain.card.Suit;
-import blackjack.domain.result.GameResult;
-import blackjack.domain.result.GameSummary;
+import blackjack.domain.result.ProfitResult;
+import blackjack.domain.result.ScoreResult;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,31 +53,31 @@ class PlayersTest {
 
     @Test
     @DisplayName("게임 결과 계산")
-    void test_calculate_game_summary() {
+    void test_calculate_score_result() {
 
         for (Player player : players.all()) {
             player.addCard(new Card(Suit.HEART, Rank.JACK));
         }
 
-        List<GameSummary> gameSummaries = players.calculateGameSummaries(dealer);
+        List<ScoreResult> scoreResults = players.calculateScoreResults(dealer);
 
-        for (GameSummary gameSummary : gameSummaries) {
-            assertThat(gameSummary.score()).isEqualTo(10);
+        for (ScoreResult scoreResult : scoreResults) {
+            assertThat(scoreResult.score()).isEqualTo(10);
         }
     }
 
     @Test
     @DisplayName("게임 수익 계산")
-    void test_calculate_game_result() {
+    void test_calculate_profit_result() {
 
         for (Player player : players.all()) {
             player.addCard(new Card(Suit.HEART, Rank.ACE));
         }
 
-        List<GameResult> gameResults = players.calculateGameResults(dealer);
+        List<ProfitResult> profitResults = players.calculateProfitResults(dealer);
 
-        assertThat(gameResults)
-                .extracting(GameResult::name, GameResult::profit)
+        assertThat(profitResults)
+                .extracting(ProfitResult::name, ProfitResult::profit)
                 .containsExactly(
                         tuple("딜러", -1000),
                         tuple("pobi", 1000)

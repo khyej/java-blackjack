@@ -4,8 +4,8 @@ import blackjack.domain.BlackjackGame;
 import blackjack.domain.deck.Deck;
 import blackjack.domain.participant.Player;
 import blackjack.domain.participant.Players;
-import blackjack.domain.result.GameResult;
-import blackjack.domain.result.GameSummary;
+import blackjack.domain.result.ProfitResult;
+import blackjack.domain.result.ScoreResult;
 import blackjack.view.InputParser;
 import blackjack.view.InputView;
 import blackjack.view.OutputView;
@@ -34,8 +34,8 @@ public class BlackjackController {
 
         hitTurns(blackjackGame);
 
-        displayGameSummaries(blackjackGame);
-        displayGameResults(blackjackGame);
+        displayScoreResults(blackjackGame);
+        displayProfitResults(blackjackGame);
 
         inputView.closeScanner();
     }
@@ -75,14 +75,14 @@ public class BlackjackController {
         }
     }
 
-    private void displayGameSummaries(BlackjackGame blackjackGame) {
-        List<GameSummary> gameSummaries = blackjackGame.calculateGameSummaries();
-        outputView.printGameSummary(gameSummaries);
+    private void displayScoreResults(BlackjackGame blackjackGame) {
+        List<ScoreResult> scoreResults = blackjackGame.calculateScoreResults();
+        outputView.printScoreResults(scoreResults);
     }
 
-    private void displayGameResults(BlackjackGame blackjackGame) {
-        List<GameResult> gameResults = blackjackGame.calculateGameResults();
-        outputView.printGameResult(gameResults);
+    private void displayProfitResults(BlackjackGame blackjackGame) {
+        List<ProfitResult> profitResults = blackjackGame.calculateProfitResults();
+        outputView.printProfitResults(profitResults);
     }
 
     private <T> T retry(Supplier<T> supplier) {

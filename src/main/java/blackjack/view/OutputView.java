@@ -4,8 +4,8 @@ import blackjack.domain.card.Card;
 import blackjack.domain.deck.Deck;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
-import blackjack.domain.result.GameResult;
-import blackjack.domain.result.GameSummary;
+import blackjack.domain.result.ProfitResult;
+import blackjack.domain.result.ScoreResult;
 import java.util.List;
 
 public class OutputView {
@@ -41,22 +41,22 @@ public class OutputView {
         System.out.println(String.format("딜러는 %d미만이라 한장의 카드를 더 받았습니다.", Dealer.DEALER_STAND_SCORE));
     }
 
-    public void printGameSummary(List<GameSummary> gameSummaries) {
+    public void printScoreResults(List<ScoreResult> scoreResults) {
         System.out.println();
-        for (GameSummary gameSummary : gameSummaries) {
-            List<String> cardFormats = gameSummary.cards().stream()
+        for (ScoreResult scoreResult : scoreResults) {
+            List<String> cardFormats = scoreResult.cards().stream()
                     .map(Card::format)
                     .toList();
-            System.out.println(String.format("%s카드: %s - 결과: %d", gameSummary.name(), String.join(", ", cardFormats),
-                    gameSummary.score()));
+            System.out.println(String.format("%s카드: %s - 결과: %d", scoreResult.name(), String.join(", ", cardFormats),
+                    scoreResult.score()));
         }
     }
 
-    public void printGameResult(List<GameResult> gameResults) {
+    public void printProfitResults(List<ProfitResult> profitResults) {
         System.out.println();
         System.out.println("## 최종 수익");
-        for (GameResult gameResult : gameResults) {
-            System.out.println(String.format("%s: %d", gameResult.name(), gameResult.profit()));
+        for (ProfitResult profitResult : profitResults) {
+            System.out.println(String.format("%s: %d", profitResult.name(), profitResult.profit()));
         }
     }
 

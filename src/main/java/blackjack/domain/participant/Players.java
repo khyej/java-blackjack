@@ -2,8 +2,8 @@ package blackjack.domain.participant;
 
 import blackjack.domain.result.GameJudge;
 import blackjack.domain.result.GameOutcome;
-import blackjack.domain.result.GameResult;
-import blackjack.domain.result.GameSummary;
+import blackjack.domain.result.ProfitResult;
+import blackjack.domain.result.ScoreResult;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,32 +22,32 @@ public class Players {
         return players;
     }
 
-    public List<GameSummary> calculateGameSummaries(Dealer dealer) {
-        List<GameSummary> gameSummaries = new ArrayList<>();
-        gameSummaries.add(GameSummary.from(dealer));
-        players.forEach(player -> gameSummaries.add(GameSummary.from(player)));
-        return gameSummaries;
+    public List<ScoreResult> calculateScoreResults(Dealer dealer) {
+        List<ScoreResult> scoreResults = new ArrayList<>();
+        scoreResults.add(ScoreResult.from(dealer));
+        players.forEach(player -> scoreResults.add(ScoreResult.from(player)));
+        return scoreResults;
     }
 
-    public List<GameResult> calculateGameResults(Dealer dealer) {
+    public List<ProfitResult> calculateProfitResults(Dealer dealer) {
         GameJudge gameJudge = new GameJudge();
-        List<GameResult> gameResults = calculatePlayerGameResults(gameJudge, dealer);
-        int totalPlayerProfit = gameResults.stream()
-                .mapToInt(GameResult::profit)
+        List<ProfitResult> profitResults = calculatePlayerProfitResults(gameJudge, dealer);
+        int totalPlayerProfit = profitResults.stream()
+                .mapToInt(ProfitResult::profit)
                 .sum();
 
-        gameResults.addFirst(GameResult.from(dealer, -totalPlayerProfit));
-        return gameResults;
+        profitResults.addFirst(ProfitResult.from(dealer, -totalPlayerProfit));
+        return profitResults;
     }
 
-    private List<GameResult> calculatePlayerGameResults(GameJudge gameJudge, Dealer dealer) {
-        List<GameResult> playerGameResults = new ArrayList<>();
+    private List<ProfitResult> calculatePlayerProfitResults(GameJudge gameJudge, Dealer dealer) {
+        List<ProfitResult> playerProfitResults = new ArrayList<>();
         for (Player player : players) {
             GameOutcome outcome = gameJudge.judge(player, dealer);
             int playerProfit = player.getBet().calculateProfit(outcome.getPayoutRate());
-            playerGameResults.add(GameResult.from(player, playerProfit));
+            playerProfitResults.add(ProfitResult.from(player, playerProfit));
         }
-        return playerGameResults;
+        return playerProfitResults;
     }
 
     private void validateDuplicate(List<Player> allPlayers) {

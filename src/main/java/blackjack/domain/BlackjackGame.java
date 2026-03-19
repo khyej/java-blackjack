@@ -4,8 +4,8 @@ import blackjack.domain.deck.Deck;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
 import blackjack.domain.participant.Players;
-import blackjack.domain.result.GameResult;
-import blackjack.domain.result.GameSummary;
+import blackjack.domain.result.ProfitResult;
+import blackjack.domain.result.ScoreResult;
 import java.util.List;
 
 
@@ -41,12 +41,12 @@ public class BlackjackGame {
         deck.provideOneCard(dealer);
     }
 
-    public List<GameSummary> calculateGameSummaries() {
-        return players.calculateGameSummaries(dealer);
+    public List<ScoreResult> calculateScoreResults() {
+        return players.calculateScoreResults(dealer);
     }
 
-    public List<GameResult> calculateGameResults() {
-        return players.calculateGameResults(dealer);
+    public List<ProfitResult> calculateProfitResults() {
+        return players.calculateProfitResults(dealer);
     }
 
     public List<Player> getPlayers() {
