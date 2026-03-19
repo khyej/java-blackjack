@@ -49,11 +49,11 @@ public class Hand {
 
     private int convertAceToHigh(int currentScore) {
         int aceScoreGap = Rank.ACE.getHighScore() - Rank.ACE.getBaseScore();
-        if (currentScore + aceScoreGap <= BLACKJACK_SCORE) {
-            return currentScore + aceScoreGap;
+        int highAceScore = currentScore + aceScoreGap;
+        if (highAceScore <= BLACKJACK_SCORE) {
+            return highAceScore;
         }
         return currentScore;
     }
-
 }
 
