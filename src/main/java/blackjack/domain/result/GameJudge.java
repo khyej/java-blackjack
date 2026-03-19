@@ -16,10 +16,7 @@ public class GameJudge {
         if (player.isBlackjack()) {
             return BLACKJACK_WIN;
         }
-        if (dealer.isBlackjack()) {
-            return LOSE;
-        }
-        if (player.isBust()) {
+        if (dealer.isBlackjack() || player.isBust()) {
             return LOSE;
         }
         if (dealer.isBust()) {
