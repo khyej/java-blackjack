@@ -1,7 +1,7 @@
 package blackjack.controller;
 
+import blackjack.domain.BlackjackGame;
 import blackjack.domain.deck.Deck;
-import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
 import blackjack.domain.participant.Players;
 import blackjack.domain.result.GameResult;
@@ -28,13 +28,14 @@ public class BlackjackController {
 
     public void run() {
         Players players = setupPlayers();
-        Dealer dealer = new Dealer();
+        BlackjackGame blackjackGame = new BlackjackGame(players, deck);
 
-        initCards(players, dealer);
-        hit(players, dealer);
+        displayInitCards(blackjackGame);
 
-        displayGameSummaries(players, dealer);
-        displayGameResults(players, dealer);
+        hitTurns(blackjackGame);
+
+        displayGameSummaries(blackjackGame);
+        displayGameResults(blackjackGame);
 
         inputView.closeScanner();
     }
@@ -43,7 +44,6 @@ public class BlackjackController {
         List<String> playerNames = retry(() -> {
             String input = inputView.readPlayerName();
             return InputParser.parse(input);
-
         });
 
         List<Player> allPlayers = new ArrayList<>();
@@ -56,33 +56,32 @@ public class BlackjackController {
         return new Players(allPlayers);
     }
 
-    private void initCards(Players players, Dealer dealer) {
-        deck.provideInitCards(players, dealer);
-        outputView.printInitCards(players.all(), dealer);
-
+    private void displayInitCards(BlackjackGame blackjackGame) {
+        blackjackGame.initCards();
+        outputView.printInitCards(blackjackGame.getPlayers(), blackjackGame.getDealer());
     }
 
-    private void hit(Players players, Dealer dealer) {
-        for (Player player : players.all()) {
-            while (player.canHit() && retry(() -> inputView.readCardAdd(player))) {
-                deck.provideOneCard(player);
+    private void hitTurns(BlackjackGame blackjackGame) {
+        for (Player player : blackjackGame.getPlayers()) {
+            while (blackjackGame.canPlayerHit(player) && retry(() -> inputView.readCardAdd(player))) {
+                blackjackGame.hitPlayer(player);
                 outputView.printPlayerCards(player);
             }
         }
 
-        while (dealer.canHit()) {
+        while (blackjackGame.canDealerHit()) {
             outputView.printDealerHit();
-            deck.provideOneCard(dealer);
+            blackjackGame.hitDealer();
         }
     }
 
-    private void displayGameSummaries(Players players, Dealer dealer) {
-        List<GameSummary> gameSummaries = players.calculateGameSummaries(dealer);
+    private void displayGameSummaries(BlackjackGame blackjackGame) {
+        List<GameSummary> gameSummaries = blackjackGame.calculateGameSummaries();
         outputView.printGameSummary(gameSummaries);
     }
 
-    private void displayGameResults(Players players, Dealer dealer) {
-        List<GameResult> gameResults = players.calculateGameResults(dealer);
+    private void displayGameResults(BlackjackGame blackjackGame) {
+        List<GameResult> gameResults = blackjackGame.calculateGameResults();
         outputView.printGameResult(gameResults);
     }
 
